@@ -1,90 +1,30 @@
-# SECURE SHARE (AES + RSA)
+# SecureShare
 
-## Description
+A real-time encrypted file transfer app. Send files directly to online users — encrypted with AES-256 + RSA-2048 before leaving your device.
 
-This project is a web application that allows users to send and receive files safely.
-It uses AES to encrypt files and RSA to protect the encryption key.
-The goal of this system is to keep files private and secure during transfer.
-
----
-
-## Features
-
-* User registration and login
-* Secure password using bcrypt
-* Authentication using JWT
-* Upload and send files
-* AES encryption for files
-* RSA encryption for key exchange
-* Download and decrypt files
-* Real-time file transfer using Socket.IO
-
----
-
-## Installation
-
-Steps to install your project:
+## Setup
 
 ```bash
-git clone https://github.com/planamayreyl-lab/Secure-File-Sharing-System.git
-cd SECURE SHARE
-npm install
-```
-
----
-
-## Run the Project
-
-```bash
+npm install express socket.io multer jsonwebtoken bcrypt
 node server.js
 ```
 
-Open your browser and go to:
+Then open `http://localhost:3000` in your browser.
 
-```bash
-http://localhost:3000
-```
+## How it works
 
----
+1. Register an account — an RSA key pair is generated for you automatically.
+2. Log in and see who's online.
+3. Select a recipient, pick a file (max 50 MB), and send.
+4. The recipient gets a real-time prompt to accept or decline.
+5. On accept, the file is decrypted and downloaded.
 
-## How It Works
+## Encryption
 
-1. User uploads a file
-2. File is encrypted using AES
-3. AES key is encrypted using RSA
-4. File is sent to receiver
-5. Receiver accepts the file
-6. File is decrypted and downloaded
-
----
-
-## Project Structure
-
-* server.js → backend server
-* index.html → frontend
-* uploads/ → temporary files
-* keys/ → RSA keys
-* users.json → user data
-
----
-
-## Authors
-
-* GROUP 1/  Mayreyl Plana & Nicole sagapay
-
----
+Files are encrypted with a random AES-256 key. That key is then encrypted with the recipient's RSA-2048 public key, so only they can decrypt it.
 
 ## Notes
 
-* Max file size: 50MB
-* Works on local network
-* Requires Node.js
-
----
-
-## Security
-
-* AES-256 file encryption
-* RSA-2048 key encryption
-* JWT authentication
-* bcrypt password hashing
+- User accounts are saved in `users.json` and survive server restarts.
+- Change `JWT_SECRET` in `server.js` before deploying.
+- Private keys are stored in plaintext — not recommended for public production use.
