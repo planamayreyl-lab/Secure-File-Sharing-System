@@ -48,7 +48,7 @@ function saveUsers(users) {
 
 // Load users at startup
 const users = loadUsers();
-console.log(`📂 Loaded ${Object.keys(users).length} existing user(s) from storage.`);
+console.log(`   Loaded ${Object.keys(users).length} existing user(s) from storage.`);
 
 // ─── In-memory session state ───────────────────────────────────────────────────
 // connectedUsers: socketId → { username }
@@ -181,7 +181,7 @@ app.post('/login', async (req, res) => {
   }
 
   const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '24h' });
-  console.log(`🔐 Login: ${username}`);
+  console.log(`  Login: ${username}`);
 
   res.json({
     success: true,
@@ -284,13 +284,13 @@ app.get('/download/:requestId', (req, res) => {
 
 // ─── Socket.IO ────────────────────────────────────────────────────────────────
 io.on('connection', (socket) => {
-  console.log(`🔌 Socket connected: ${socket.id}`);
+  console.log(`  Socket connected: ${socket.id}`);
 
   socket.on('register-socket', ({ token }) => {
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
       connectedUsers[socket.id] = { username: decoded.username };
-      console.log(`👤 ${decoded.username} is now online`);
+      console.log(`  ${decoded.username} is now online`);
       broadcastOnlineUsers();
     } catch {
       socket.emit('error', 'Invalid token — please log in again');
@@ -340,7 +340,7 @@ server.listen(PORT, '0.0.0.0', () => {
     });
   });
 
-  console.log(`\n🚀 SecureShare Server running!`);
+  console.log(`\n   SecureShare Server running!`);
   console.log(`   Local:   http://localhost:${PORT}`);
   console.log(`   Network: http://${localIP}:${PORT}  ← open this on other devices`);
   console.log(`   Users stored in: ${USERS_FILE}`);
